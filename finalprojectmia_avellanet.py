@@ -40,7 +40,7 @@ df["repairAmount"]=df["repairAmount"].fillna(0)
 df["damagedStateAbbreviation"]=df["damagedStateAbbreviation"].fillna("UNK")
 
 # Fills missing state abbreviations with "UNK"
- for col in ["destroyed","specialNeeds"]:
+for col in ["destroyed","specialNeeds"]:
   if col in df.columns:
     df[col]=df[col].replace(
         {"Yes":1, "yes": 1, "No": 0, "no": 0}

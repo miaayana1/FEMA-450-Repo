@@ -259,8 +259,8 @@ fig_hist=px.histogram(
     title="Distribution of Repair Amounts by TSA Eligibility", # Updated title
     barmode="overlay",
     opacity=0.6 # Makes it easier to see overlapping bars
+    labels={"repairAmount": "Repair Amount ($)", "tsaEligible": "TSA Eligible (1=Yes, 0=No)"} 
 )
-
 st.plotly_chart(fig_hist)
 
 #boxplot of repair amount by tsa eligibility

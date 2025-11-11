@@ -47,10 +47,6 @@ for col in ["destroyed","specialNeeds"]:
     df[col]=df[col].replace(
         {"Yes":1, "yes": 1, "No": 0, "no": 0}
     ).fillna(0).astype(int)
-  print(df.isna().sum().head(10))
-
-# Converts yes/no columns to 1/0, blanks assumed as "No"
-"""
 
 crosstab_state=pd.crosstab(df["residenceType"],df["tsaEligible"], normalize="index")*100
 print("\nTSA Eligibility Rate by State/Territory(%):")
@@ -142,7 +138,7 @@ not_eligible=df[df["tsaEligible"]==0]["repairAmount"]
 #I calculated a 95& CI for the average repair amount to estimate the range where the true population mean falls. This gives FEMA an estimation of the typical repair costs applicants faced after disasters. The confidence interval shows the average repair amount along with upper and lower limits, meaning that we can be 95% confident that the actual mean repair cost is within that range."""
 
 t_stat,p_value = stats.ttest_ind(eligible,not_eligible,equal_var=False)
-t_stat, p_value
+#t_stat, p_value
 
 # Welch's t-test"""
 

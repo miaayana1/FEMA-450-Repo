@@ -275,4 +275,12 @@ fig_box=px.box(
 )
 st.plotly_chart(fig_box)
 
-st.markdown("*Insight:* Compare the central tendency and spread of repair amounts for TSA eligible vs. non-eligible households.*")
+st.markdown(
+    """
+    **Insight:**  
+    The histogram shows that most repair amounts are relatively small, 
+    but a few households report very high repair costs.  
+    The boxplot reveals that TSA-eligible applicants generally have higher repair amounts 
+    than non-eligible ones, suggesting greater damage or need for assistance.
+    """
+)

@@ -252,7 +252,6 @@ import pandas as pd
 import plotly.express as px
 
 st.title("FEMA Disaster Relief Dashboard")
-df=pd.read_csv("/content/IndividualAssistanceHousingRegistrantsLargeDisasters.csv")
 st.subheader("Data Preview")
 st.write(df.head())
 

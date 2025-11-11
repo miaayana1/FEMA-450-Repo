@@ -40,29 +40,27 @@ df["repairAmount"]=df["repairAmount"].fillna(0)
 df["damagedStateAbbreviation"]=df["damagedStateAbbreviation"].fillna("UNK")
 
 # Fills missing state abbreviations with "UNK"
-"""
-
-for col in ["destroyed","specialNeeds"]:
+ for col in ["destroyed","specialNeeds"]:
   if col in df.columns:
     df[col]=df[col].replace(
         {"Yes":1, "yes": 1, "No": 0, "no": 0}
-    ).fillna(0).astype(int)
+    ).fillna(0).astype(int) 
 
 crosstab_state=pd.crosstab(df["residenceType"],df["tsaEligible"], normalize="index")*100
-print("\nTSA Eligibility Rate by State/Territory(%):")
-print(crosstab_state.round(1))
+#print("\nTSA Eligibility Rate by State/Territory(%):")
+#print(crosstab_state.round(1))
 
 # TSA Eligibility by residence type"""
 
 crosstab_state=pd.crosstab(df["damagedStateAbbreviation"],df["tsaEligible"], normalize="index")*100
-print("\nTSA Eligibility Rate by State/Territory(%):")
-print(crosstab_state.round(1))
+#print("\nTSA Eligibility Rate by State/Territory(%):")
+#print(crosstab_state.round(1))
 
 # TSA eligibility by state/territory"""
 
 avg_repair=df.groupby("damagedStateAbbreviation")["repairAmount"].mean().sort_values(ascending=False)
-print("\nAverage Repair Amount by State:")
-print(avg_repair.head(10))
+#print("\nAverage Repair Amount by State:")
+#print(avg_repair.head(10))
 
 # Average repair amount by state"""
 
@@ -126,9 +124,9 @@ def mean_confidence_interval(data, confidence=0.95):
 # Defines a small function in order to calculate for CI"""
 
 mean_all, lower_all, upper_all = mean_confidence_interval(df["repairAmount"])
-print("Overall Mean Repair Amount and 95% Confidence Interval:")
-print(f"Mean = ${mean_all:,.2f}")
-print(f"95% CI = [${lower_all:,.2f}, ${upper_all:,.2f}]")
+#print("Overall Mean Repair Amount and 95% Confidence Interval:")
+#print(f"Mean = ${mean_all:,.2f}")
+#print(f"95% CI = [${lower_all:,.2f}, ${upper_all:,.2f}]")
 
 # Calculate CI for repairAmount (whole sample)"""
 
@@ -142,9 +140,9 @@ t_stat,p_value = stats.ttest_ind(eligible,not_eligible,equal_var=False)
 
 # Welch's t-test"""
 
-print("\nT-Test: TSA Eligible vs Not Eligible")
-print(f"t-statistic = {t_stat:.3f}")
-print(f"p-value = {p_value:.4f}")
+#print("\nT-Test: TSA Eligible vs Not Eligible")
+#print(f"t-statistic = {t_stat:.3f}")
+#print(f"p-value = {p_value:.4f}")
 
 if p_value < 0.05:
   print("There is a significant difference in average repair amounts")

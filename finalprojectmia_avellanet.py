@@ -24,22 +24,22 @@ df.head(5)
 df=df.dropna(subset=["tsaEligible"])
 df["tsaEligible"]=df["tsaEligible"].astype(int)
 
-"""* Drops rows where tsaEligible (target) is missing"""
+# Drops rows where tsaEligible (target) is missing"""
 
 df["residenceType"]=df["residenceType"].fillna("Unknown")
 
-"""* Fills missing residenceType with Unknown"""
+# Fills missing residenceType with Unknown"""
 
 df["grossIncome_missing"]=df["grossIncome"].isna().astype(int)
 df["grossIncome"]=df["grossIncome"].fillna(0)
 df["repairAmount_missing"]=df["repairAmount"].isna().astype(int)
 df["repairAmount"]=df["repairAmount"].fillna(0)
 
-"""* Fills missing grossIncome and repairAmount with 0, and creates flags"""
+# Fills missing grossIncome and repairAmount with 0, and creates flags"""
 
 df["damagedStateAbbreviation"]=df["damagedStateAbbreviation"].fillna("UNK")
 
-"""* Fills missing state abbreviations with "UNK"
+# Fills missing state abbreviations with "UNK"
 """
 
 for col in ["destroyed","specialNeeds"]:
@@ -49,26 +49,26 @@ for col in ["destroyed","specialNeeds"]:
     ).fillna(0).astype(int)
   print(df.isna().sum().head(10))
 
-"""* Converts yes/no columns to 1/0, blanks assumed as "No"
+# Converts yes/no columns to 1/0, blanks assumed as "No"
 """
 
 crosstab_state=pd.crosstab(df["residenceType"],df["tsaEligible"], normalize="index")*100
 print("\nTSA Eligibility Rate by State/Territory(%):")
 print(crosstab_state.round(1))
 
-"""* TSA Eligibility by residence type"""
+# TSA Eligibility by residence type"""
 
 crosstab_state=pd.crosstab(df["damagedStateAbbreviation"],df["tsaEligible"], normalize="index")*100
 print("\nTSA Eligibility Rate by State/Territory(%):")
 print(crosstab_state.round(1))
 
-"""* TSA eligibility by state/territory"""
+# TSA eligibility by state/territory"""
 
 avg_repair=df.groupby("damagedStateAbbreviation")["repairAmount"].mean().sort_values(ascending=False)
 print("\nAverage Repair Amount by State:")
 print(avg_repair.head(10))
 
-"""* Average repair amount by state"""
+# Average repair amount by state"""
 
 tsa_rate_state=(
     df.groupby("damagedStateAbbreviation")["tsaEligible"]
@@ -85,7 +85,7 @@ figone=px.bar(
 )
 figone.show()
 
-"""* Bar Chart: TSA eligibility rate by state"""
+# Bar Chart: TSA eligibility rate by state"""
 
 figtwo=px.histogram(
     df,
@@ -96,7 +96,7 @@ figtwo=px.histogram(
 )
 figtwo.show()
 
-"""* Histogram: Distribution of repairAmount"""
+# Histogram: Distribution of repairAmount"""
 
 figthree=px.box(
     df,
@@ -107,7 +107,7 @@ figthree=px.box(
 )
 figthree.show()
 
-"""* Boxplot: repairAmount across residence types"""
+# Boxplot: repairAmount across residence types"""
 
 figfour=px.histogram(
     df,
@@ -127,24 +127,24 @@ def mean_confidence_interval(data, confidence=0.95):
   h = se * stats.t.ppf((1+confidence)/2, n-1)
   return mean, mean - h, mean + h
 
-"""* Defines a small function in order to calculate for CI"""
+# Defines a small function in order to calculate for CI"""
 
 mean_all, lower_all, upper_all = mean_confidence_interval(df["repairAmount"])
 print("Overall Mean Repair Amount and 95% Confidence Interval:")
 print(f"Mean = ${mean_all:,.2f}")
 print(f"95% CI = [${lower_all:,.2f}, ${upper_all:,.2f}]")
 
-"""* Calculate CI for repairAmount (whole sample)"""
+# Calculate CI for repairAmount (whole sample)"""
 
 eligible=df[df["tsaEligible"]==1]["repairAmount"]
 not_eligible=df[df["tsaEligible"]==0]["repairAmount"]
 
-"""* I calculated a 95& CI for the average repair amount to estimate the range where the true population mean falls. This gives FEMA an estimation of the typical repair costs applicants faced after disasters. The confidence interval shows the average repair amount along with upper and lower limits, meaning that we can be 95% confident that the actual mean repair cost is within that range."""
+#I calculated a 95& CI for the average repair amount to estimate the range where the true population mean falls. This gives FEMA an estimation of the typical repair costs applicants faced after disasters. The confidence interval shows the average repair amount along with upper and lower limits, meaning that we can be 95% confident that the actual mean repair cost is within that range."""
 
 t_stat,p_value = stats.ttest_ind(eligible,not_eligible,equal_var=False)
 t_stat, p_value
 
-"""* Welch's t-test"""
+# Welch's t-test"""
 
 print("\nT-Test: TSA Eligible vs Not Eligible")
 print(f"t-statistic = {t_stat:.3f}")
@@ -155,7 +155,7 @@ if p_value < 0.05:
 else:
   print("There is no significant difference in average repair amounts")
 
-"""* I used a t-test to compare the average repair amounts between applicants who were TSA eligible and those who were not. This test checks if the difference in their averages is statistically significant or just due to random chance. If the p-value was less than 0.05, it meant that the difference is significant, which could correlate to TSA eligibility possiblity relating to higher/lower repair costs."""
+#I used a t-test to compare the average repair amounts between applicants who were TSA eligible and those who were not. This test checks if the difference in their averages is statistically significant or just due to random chance. If the p-value was less than 0.05, it meant that the difference is significant, which could correlate to TSA eligibility possiblity relating to higher/lower repair costs."""
 
 state1="LA"
 state2="TX"
@@ -173,7 +173,7 @@ if p_value2 < 0.05:
 else:
     print(f" No significant difference between {state1} and {state2}.")
 
-"""* I ran another t-test in order to compare the mean repair amounts between applicants in LA and TX. Both states experience frequent hurriances and floods, so I was curious to see if the damage costs differ. If the p-value was below 0.05, it shows a meaningful difference in average repair amounts between the two states. If it was higher, it means their repair costs were not significantly different. In my case, LA and TX are significantly difference because of the p value being 0. These results sugguest that both eligibility and location play an important role in the amount of repair assistance applicants may need."""
+#I ran another t-test in order to compare the mean repair amounts between applicants in LA and TX. Both states experience frequent hurricanes and floods, so I was curious to see if the damage costs differ. If the p-value was below 0.05, it shows a meaningful difference in average repair amounts between the two states. If it was higher, it means their repair costs were not significantly different. In my case, LA and TX are significantly difference because of the p value being 0. These results sugguest that both eligibility and location play an important role in the amount of repair assistance applicants may need."""
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -187,7 +187,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, confu
 X=df[["grossIncome", "repairAmount", "destroyed","waterLevel","residenceType", "damagedStateAbbreviation"]]
 y=df["tsaEligible"].astype(int)
 
-"""* Before modeling, I filled any missing values to avoid errors and ensure all rows are used. Numeric values such as grossIncome and repairAmount were replaced with 0, and text fields were replaced with "unknown" or UNK"""
+# Before modeling, I filled any missing values to avoid errors and ensure all rows are used. Numeric values such as grossIncome and repairAmount were replaced with 0, and text fields were replaced with "unknown" or UNK"""
 
 X["grossIncome"] = X["grossIncome"].fillna(0)
 X["repairAmount"] = X["repairAmount"].fillna(0)
@@ -196,11 +196,11 @@ X["waterLevel"] = X["waterLevel"].fillna(0)
 X["residenceType"] = X["residenceType"].fillna("Unknown")
 X["damagedStateAbbreviation"] = X["damagedStateAbbreviation"].fillna("UNK")
 
-"""* I chose predictors that could influence if an applicant qualifies for TSA. The variable tsaEligible indicates if an applicant was approved for temporary shelter assistance."""
+# I chose predictors that could influence if an applicant qualifies for TSA. The variable tsaEligible indicates if an applicant was approved for temporary shelter assistance."""
 
 X_train, X_test, y_train, y_test=train_test_split(X,y,test_size=0.2,random_state=42)
 
-"""* The dataset was split into 80% training and 20% testing to evaluate model performance fairly."""
+# The dataset was split into 80% training and 20% testing to evaluate model performance fairly."""
 
 numeric_features=["grossIncome","repairAmount", "destroyed", "waterLevel"]
 categorical_features=["residenceType","damagedStateAbbreviation"]
@@ -212,7 +212,7 @@ preprocessor=ColumnTransformer(
     ]
 )
 
-"""* I used MinMaxScaler to scale numeric variables between 0 and 1 so that no feature dominates the others. For the text variables I used OneHotEncoder to convert them into binary columns."""
+# I used MinMaxScaler to scale numeric variables between 0 and 1 so that no feature dominates the others. For the text variables, I used OneHotEncoder to convert them into binary columns."""
 
 tree_pipeline=Pipeline(steps=[
     ("preprocessor",preprocessor),
@@ -224,7 +224,7 @@ rf_pipeline = Pipeline(steps=[
     ("model", RandomForestClassifier(n_estimators=150, max_depth=10, random_state=42))
 ])
 
-"""* I built a decision tree and a random forest. The random forest combines many trees to improve accuracy. The decision tree provides a visual of the key predictors. Both use the same preprocessing pipeline for consistency."""
+#* I built a decision tree and a random forest. The random forest combines many trees to improve accuracy. The decision tree provides a visual of the key predictors. Both use the same preprocessing pipeline for consistency."""
 
 tree_pipeline.fit(X_train, y_train)
 rf_pipeline.fit(X_train, y_train)
@@ -232,7 +232,7 @@ rf_pipeline.fit(X_train, y_train)
 y_pred_tree=tree_pipeline.predict(X_test)
 y_pred_rf=rf_pipeline.predict(X_test)
 
-"""* After training I used each model to predict TSA eligibility for the test set"""
+#After training I used each model to predict TSA eligibility for the test set"""
 
 def show_results(name, y_true, y_pred):
   print(f"\n{name} Results:")
@@ -244,7 +244,7 @@ def show_results(name, y_true, y_pred):
 show_results("Decision Tree", y_test,y_pred_tree)
 show_results("Random Forest",y_test,y_pred_rf)
 
-"""* I then evaluated both models using accuracy, precision, recall, and confusion matrices. I think the random forest model performed better in regards to all the metris, because it showed stronger generalization and less missclassifications. As a result of this, I think the Random Forest model is the better one for predicting TSA eligibility."""
+# I then evaluated both models using accuracy, precision, recall, and confusion matrices. I think the random forest model performed better in regards to all the metris, because it showed stronger generalization and less missclassifications. As a result of this, I think the Random Forest model is the better one for predicting TSA eligibility."""
 
 #!pip install streamlit
 import streamlit as st
@@ -263,7 +263,14 @@ st.plotly_chart(fig_hist)
 
 #boxplot of repair amount by tsa eligibility
 st.subheader("Boxplot: Repair Amount by TSA Eligibility")
-fig_box=px.box(df, x="tsaEligible", y="repairAmount",title="Repair Amount by TSA Eligibilty",labels={"tsaEligible": "TSA Eligible (1=Yes,0=No)", "repairAmount":"Repair Amount"})
+fig_box=px.box(
+    df, 
+    x="tsaEligible", 
+    y="repairAmount",
+    color="tsaEligible",
+    title="Repair Amount by TSA Eligibilty",
+    labels={"tsaEligible": "TSA Eligible (1=Yes,0=No)", "repairAmount":"Repair Amount"}
+)
 st.plotly_chart(fig_box)
 
 st.markdown("*Insight:* Compare the central tendency and spread of repair amounts for TSA eligible vs. non-eligible households.*")

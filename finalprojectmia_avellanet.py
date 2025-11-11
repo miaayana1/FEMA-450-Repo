@@ -250,8 +250,16 @@ st.subheader("Data Preview")
 st.write(df.head())
 
 #histogram of repair amount
-st.subheader("Histogram of Repair Amount")
-fig_hist=px.histogram(df, x="repairAmount",nbins=30,title="Distribution of Repair Amounts")
+st.subheader("Histogram of Repair Amount by TSA Eligibility") # Updated subheader for clarity
+fig_hist=px.histogram(
+    df, 
+    x="repairAmount",
+    color="tsaEligible",
+    nbins=30,
+    title="Distribution of Repair Amounts by TSA Eligibility", # Updated title
+    barmode="overlay",
+    opacity=0.6 # Makes it easier to see overlapping bars
+)
 
 st.plotly_chart(fig_hist)
 

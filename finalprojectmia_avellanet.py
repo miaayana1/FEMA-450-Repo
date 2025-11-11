@@ -246,7 +246,7 @@ show_results("Random Forest",y_test,y_pred_rf)
 
 """* I then evaluated both models using accuracy, precision, recall, and confusion matrices. I think the random forest model performed better in regards to all the metris, because it showed stronger generalization and less missclassifications. As a result of this, I think the Random Forest model is the better one for predicting TSA eligibility."""
 
-!pip install streamlit
+#!pip install streamlit
 import streamlit as st
 import pandas as pd
 import plotly.express as px
